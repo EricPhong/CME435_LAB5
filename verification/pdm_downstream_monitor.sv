@@ -120,14 +120,36 @@ class pdm_downstream_monitor extends uvm_monitor;
         // Abort packet collection if timeout occurred
         if (wait_cycles == 5) continue; 
 
-        // 3. PROCEED detected. Stream Payload Bytes
-        bytes.delete( );// clear byte queue
+        // // 3. PROCEED detected. Stream Payload Bytes
+        // bytes.delete( );// clear byte queue
+        // for (int i = 0; i < expected; i++) begin
+        //   @(vif.cb_mon);
+
+        //   // Protocol Violation: PROCEED pulse lasted >1 cycle
+        //   if (i == 0 && vif.cb_mon.proceed === 1'b1)
+        //     `uvm_error("PROCPULSE", $sformatf("Port %0d PROCEED lasted >1 cycle", cfg.port_id))
+
+        //   // Protocol Violation: Overlapping packet requested during payload stream
+        //   if (vif.cb_mon.newdata_len !== 5'd0)
+        //     `uvm_error("OVERLAP", $sformatf("Port %0d got overlapping packet", cfg.port_id))
+
+        //   bytes.push_back(vif.cb_mon.data_out);  // append the byte in queue
+        // end
+
+        
+        // 3. PROCEED was sampled at this edge (P). The DUT drives the first
+        //    payload byte on the next edge (P+1), so with #1step input sampling
+        //    it is first visible at P+2. Skip one edge first (Lab 5 fix: the
+        //    scoreboard showed every packet shifted by one byte).
+        @(vif.cb_mon);
+
+        // Protocol Violation: PROCEED pulse lasted >1 cycle
+        if (vif.cb_mon.proceed === 1'b1)
+          `uvm_error("PROCPULSE", $sformatf("Port %0d PROCEED lasted >1 cycle", cfg.port_id))
+
+        bytes.delete(); // clear byte queue
         for (int i = 0; i < expected; i++) begin
           @(vif.cb_mon);
-
-          // Protocol Violation: PROCEED pulse lasted >1 cycle
-          if (i == 0 && vif.cb_mon.proceed === 1'b1)
-            `uvm_error("PROCPULSE", $sformatf("Port %0d PROCEED lasted >1 cycle", cfg.port_id))
 
           // Protocol Violation: Overlapping packet requested during payload stream
           if (vif.cb_mon.newdata_len !== 5'd0)

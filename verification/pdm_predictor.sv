@@ -61,8 +61,9 @@ class pdm_predictor extends uvm_subscriber #(upstream_seq_item);
     exp.kind        = downstream_seq_item::RSP;
     exp.port_id     = t.destination - 1;           // pin/dest 1..4 -> index 0..3
     exp.newdata_len = t.data.size();
-    exp.data        = t.data;                      // dynamic array copy (by value)
-
+    exp.data = new[t.data.size()];               // size the 4-state array
+    foreach (t.data[i]) exp.data[i] = t.data[i]; // element copy: bit -> logic is legal
+    
     n_predicted++;
     `uvm_info("PRED", $sformatf("Predict port_idx %0d (DATA_OUT_%0d) len %0d",
               exp.port_id, exp.port_id + 1, exp.newdata_len), UVM_HIGH)
