@@ -1,4 +1,4 @@
-/* Eric Phong, rfp479, CME435, 11344905, Lab4 */ 
+/* Eric Phong, rfp479, CME435, 11344905, Lab5 */ 
  
 // class upstream_seq_item extends uvm_sequence_item; //extend
 
@@ -70,6 +70,9 @@ class upstream_seq_item extends uvm_sequence_item;
   rand int unsigned      reset_after_bytes;   // In-flight byte offset for mid-packet reset
   rand int unsigned      reset_cycles;        // Duration in clock cycles to hold rst_b low
 
+  // Lab 5: filled in by the upstream monitor (observed, not randomized)
+  int unsigned           ack_latency;         // Cycles from terminating BND_PLSE to ACK
+
   // Hard constraints: Protocol invariants
   constraint legal_destination_c {
     destination inside {[8'h01 : 8'h04]};
@@ -109,6 +112,7 @@ class upstream_seq_item extends uvm_sequence_item;
     `uvm_field_int(inter_pkt_delay,               UVM_ALL_ON | UVM_DEC | UVM_NOCOMPARE)
     `uvm_field_int(reset_after_bytes,             UVM_ALL_ON | UVM_DEC | UVM_NOCOMPARE)
     `uvm_field_int(reset_cycles,                  UVM_ALL_ON | UVM_DEC | UVM_NOCOMPARE)
+    `uvm_field_int(ack_latency,                   UVM_ALL_ON | UVM_DEC | UVM_NOCOMPARE)
   `uvm_object_utils_end
 
   function new(string name = "upstream_seq_item");

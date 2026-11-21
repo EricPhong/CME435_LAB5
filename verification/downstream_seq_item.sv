@@ -1,4 +1,4 @@
-/* Eric Phong, rfp479, CME435, 11344905, Lab4 */ 
+/* Eric Phong, rfp479, CME435, 11344905, Lab5 */ 
  
 class downstream_seq_item extends uvm_sequence_item;
 
@@ -12,7 +12,8 @@ class downstream_seq_item extends uvm_sequence_item;
   int unsigned reset_count;
   logic [4:0] newdata_len;
   logic [7:0] data[];
-  rand int unsigned proceed_delay;
+  rand int unsigned proceed_delay;      // requested by the reactive sequence
+  int unsigned meas_proceed_delay;      // Lab 5: measured on the bus by the monitor
 
   constraint response_delay_c { proceed_delay inside {[1:4]}; } // constraing to the recommended 
 
@@ -23,6 +24,7 @@ class downstream_seq_item extends uvm_sequence_item;
     `uvm_field_int(newdata_len, UVM_ALL_ON)
     `uvm_field_array_int(data, UVM_ALL_ON)
     `uvm_field_int(proceed_delay, UVM_ALL_ON)
+    `uvm_field_int(meas_proceed_delay, UVM_ALL_ON | UVM_NOCOMPARE)
   `uvm_object_utils_end
 
   function new(string name="downstream_seq_item"); // Constructor

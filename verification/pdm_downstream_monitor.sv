@@ -1,4 +1,4 @@
-/* Eric Phong, rfp479, CME435, 11344905, Lab4 */
+/* Eric Phong, rfp479, CME435, 11344905, Lab5 */
 
 class pdm_downstream_monitor extends uvm_monitor;
   `uvm_component_utils(pdm_downstream_monitor)
@@ -143,6 +143,7 @@ class pdm_downstream_monitor extends uvm_monitor;
         item.newdata_len = expected;
         item.reset_count = cfg.reset_count;
         item.data = bytes; // Direct queue-to-dynamic array assignment
+        item.meas_proceed_delay = wait_cycles; // Lab 5: cycles NEWDATA_LEN -> PROCEED
 
         downstream_txn_ap.write(item); // broadcasting to this port
 

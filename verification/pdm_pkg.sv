@@ -1,4 +1,4 @@
-/* Eric Phong, rfp479, CME435, 11344905, Lab4 */
+/* Eric Phong, rfp479, CME435, 11344905, Lab5 */
 
 package pdm_pkg;
     timeunit 1ns;
@@ -25,6 +25,12 @@ package pdm_pkg;
     `include "pdm_downstream_monitor.sv"
     `include "pdm_upstream_agent.sv"
     `include "pdm_downstream_agent.sv"
+
+    // Lab 5: Analysis components (must come before the env that builds them)
+    `include "pdm_predictor.sv"
+    `include "pdm_scoreboard.sv"
+    `include "pdm_coverage.sv"
+
     `include "pdm_env.sv"
 
     // Sequences
@@ -36,6 +42,7 @@ package pdm_pkg;
     `include "pdm_saturation_seq.sv"
     `include "pdm_reset_traffic_seq.sv"
     `include "pdm_random_traffic_seq.sv"
+    `include "pdm_payload_corner_seq.sv"
 
     // Test Suite
     `include "pdm_test_base.sv"
@@ -45,5 +52,6 @@ package pdm_pkg;
     `include "pdm_saturation_test.sv"
     `include "pdm_reset_test.sv"
     `include "pdm_random_test.sv"
+    `include "pdm_full_coverage_test.sv"
 
 endpackage : pdm_pkg

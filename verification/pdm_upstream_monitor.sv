@@ -1,4 +1,4 @@
-/* Eric Phong, rfp479, CME435, 11344905, Lab4 */
+/* Eric Phong, rfp479, CME435, 11344905, Lab5 */
 
 class pdm_upstream_monitor extends uvm_monitor;
 
@@ -130,6 +130,8 @@ class pdm_upstream_monitor extends uvm_monitor;
           end
         end
         
+        item.ack_latency = ack_late; // Lab 5: observed ACK latency for coverage
+
         // broadcast that packet is done
         upstream_txn_ap.write(item);
       end 
