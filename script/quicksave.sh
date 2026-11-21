@@ -15,6 +15,6 @@ else
     COMMIT_MSG="$custom_msg ($TIMESTAMP)"
 fi
 
-git add doc/ script/ dut/ verification/ waves/
+git add doc/ script/ dut/ verification/ waves/ coverage/
 git commit -m "$COMMIT_MSG"
 git push
